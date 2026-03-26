@@ -36,15 +36,41 @@ export default function ImageUploader({ onImageSelect }: ImageUploaderProps) {
 
   const handleFile = (file: File) => {
     setError(null);
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    if (!validTypes.includes(file.type)) {
-      setError('Only JPG, JPEG, or PNG images are supported.');
+
+    // Reject formats sharp can't handle even after HEIC conversion
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+    if (['avif', 'tiff', 'tif', 'bmp'].includes(ext)) {
+      setError(`${ext.toUpperCase()} format is not supported. Please convert to JPG or PNG first.`);
+      return;
+    }
+
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic', 'image/heif'];
+    if (file.type && !validTypes.includes(file.type)) {
+      setError('Only JPG, PNG, or HEIC images are supported.');
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
       setError('File is too large. Please upload an image under 10MB.');
       return;
     }
+
+    const isHeic = ['heic', 'heif'].includes(ext) ||
+      ['image/heic', 'image/heif'].includes(file.type);
+
+    if (isHeic) {
+      // Browser can't display HEIC — convert to JPEG blob just for the preview
+      import('heic2any').then(({ default: heic2any }) => {
+        heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 })
+          .then((result) => {
+            const jpegBlob = Array.isArray(result) ? result[0] : result;
+            const url = URL.createObjectURL(jpegBlob);
+            onImageSelect(file, url); // send original HEIC to server, JPEG preview for display
+          })
+          .catch(() => setError('Could not preview HEIC image. Upload will still work.'));
+      });
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const preview = e.target?.result as string;
@@ -98,7 +124,7 @@ export default function ImageUploader({ onImageSelect }: ImageUploaderProps) {
           </div>
 
           <div className="flex items-center gap-2 mt-1">
-            {['JPG', 'JPEG', 'PNG'].map((fmt) => (
+            {['JPG', 'JPEG', 'PNG', 'HEIC'].map((fmt) => (
               <span key={fmt} className="px-2 py-0.5 rounded-md bg-muted text-muted-foreground text-xs font-medium">
                 {fmt}
               </span>

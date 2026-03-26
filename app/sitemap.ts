@@ -56,12 +56,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.95,
     },
-    // Placeholder pages — lower priority
+    // Live — background remover (AI-powered, high relevance for passport/govt ID searches)
     {
       url: `${BASE_URL}/background-remover`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.5,
+      lastModified: new Date('2026-03-27'),
+      changeFrequency: 'weekly',
+      priority: 0.95,
     },
   ];
 

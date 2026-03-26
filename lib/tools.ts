@@ -89,8 +89,8 @@ export const TOOLS: Tool[] = [
     title: 'Background Remover',
     description: 'Remove image backgrounds automatically — perfect for passport photos and professional profile pics.',
     category: 'image',
-    status: 'coming-soon',
-    badge: 'Coming Soon',
+    status: 'live',
+    badge: 'BG Remove',
     accent: 'rose',
     metaDescription:
       'Remove image background online for free. Automatic AI-based background removal for passport photos, govt ID photos, and profile pictures.',

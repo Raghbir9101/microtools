@@ -1,153 +1,114 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
-import Header from '@/components/Header';
-import FAQSection from '@/components/FAQSection';
-import AdSlot from '@/components/AdSlot';
-import { getRelatedTools } from '@/lib/tools';
+import ToolLayout from '@/components/ToolLayout';
+import BackgroundRemoverTool from '@/components/BackgroundRemoverTool';
+import { TOOL_BY_SLUG, getRelatedTools } from '@/lib/tools';
+
+const TOOL = TOOL_BY_SLUG['background-remover'];
+
+const PAGE_URL = 'https://tools.draftly.co.in/background-remover';
 
 export const metadata: Metadata = {
-  title: 'Background Remover — Free Online Tool (Coming Soon)',
+  title: 'Background Remover — Free AI Tool | Remove Image Background Online',
   description:
-    'Remove image backgrounds automatically for passport photos, govt ID photos, and profile pictures. Free, browser-based tool launching soon on Microtools.',
+    'Remove image backgrounds instantly with AI. Free, no sign-up. Perfect for Indian passport photos, UPSC/SSC/Railway govt ID cards, and profile pictures. Supports JPG, PNG, and HEIC (iPhone). Download as transparent PNG or white-background JPG.',
   keywords:
-    'background remover online, remove background free, passport photo background, govt photo background remove, image background eraser India',
-  openGraph: {
-    title: 'Background Remover — Coming Soon | Microtools',
-    description:
-      'Automatically remove image backgrounds for passport and govt ID photos. Free browser-based tool launching soon.',
-    type: 'website',
+    'background remover online free, remove background from photo, passport photo background remove, govt id photo background, UPSC photo background remove, SSC photo background, transparent background PNG, remove background AI India, HEIC background remover, proof size photo background white',
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { 'en-IN': PAGE_URL },
   },
+  openGraph: {
+    title: 'Background Remover — Free AI Tool | Microtools',
+    description:
+      'Remove backgrounds from passport photos, govt ID cards, and profile pictures using AI. Free, no sign-up. Supports JPG, PNG, HEIC. Download transparent PNG or white-background JPG.',
+    type: 'website',
+    url: PAGE_URL,
+    siteName: 'Microtools',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Background Remover — Free AI Tool',
+    description:
+      'Remove image backgrounds for passport photos and govt ID cards. Free, AI-powered, no sign-up. JPG, PNG, HEIC supported.',
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Background Remover — Microtools',
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Web',
+  url: PAGE_URL,
+  description:
+    'AI-powered background removal tool for passport photos, government ID card photos, and profile pictures. Supports JPG, PNG, and HEIC (iPhone photos). Free with no sign-up required.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+  featureList: [
+    'AI background removal',
+    'Transparent PNG download',
+    'White background JPG for passport photos',
+    'Custom background colour',
+    'HEIC / iPhone photo support',
+    'No sign-up required',
+    'Free unlimited use',
+  ],
 };
 
 const faqs = [
   {
-    question: 'What will the Background Remover do?',
+    question: 'How does the background remover work?',
     answer:
-      'The tool will automatically detect and remove the background from your photo — replacing it with white, transparent, or a custom colour. Ideal for passport photos, govt ID cards, and professional profile pictures.',
+      'Your photo is securely sent to our server where an AI segmentation model (withoutBG Focus) detects the subject and removes the background. The processed image is returned to you as a transparent PNG. Your photo is deleted from the server immediately after processing.',
+  },
+  {
+    question: 'Is my photo safe? Do you store images?',
+    answer:
+      'Yes, completely safe. Your image is sent to our private server only for processing and is deleted immediately after. We do not store, share, or use your photos for any other purpose.',
   },
   {
     question: 'Will it work for Indian passport-size photos?',
     answer:
-      'Yes. We are specifically designing it to handle the Indian passport photo standard (35×45mm, white background) and government ID photo requirements.',
+      'Yes. The tool works great for portrait photos — the standard format for Indian passport photos (35×45mm). After removing the background you can download a white-background JPG, which is exactly what government portals like DigiLocker, UPSC, SSC, and Railway require.',
   },
   {
-    question: 'Will it require any app install or sign-up?',
+    question: 'What image formats are supported?',
     answer:
-      'No. Like all Microtools, the Background Remover will run entirely in your browser with no account needed.',
+      'You can upload JPG, JPEG, PNG, and HEIC (iPhone) images up to 10MB. HEIC photos from iPhones are automatically converted. The output can be downloaded as a transparent PNG or a white-background JPG.',
   },
   {
-    question: 'When will it be available?',
+    question: 'How long does it take?',
     answer:
-      'We are actively building it. Check back soon or use our image compressor tools in the meantime.',
+      'Background removal typically takes 5–15 seconds depending on image size. The AI model runs on our server so no large downloads are needed on your side.',
+  },
+  {
+    question: 'Can I use the output for government form submissions?',
+    answer:
+      'Yes. After removing the background, select "White BG JPG" to get a passport-style photo with a clean white background. Then use our image compressor tools (20KB, 50KB, 100KB) to meet the file-size requirements of SSC, UPSC, Railway, or other government portals.',
+  },
+  {
+    question: 'Can I add a custom background colour?',
+    answer:
+      'Yes. After processing, select "Custom Color" in the download options and pick any colour using the colour picker. The preview updates in real time before you download.',
   },
 ];
 
-const relatedTools = getRelatedTools([
-  'resize-image-20kb-ssc',
-  'resize-image-50kb-upsc',
-  'resize-image-100kb-railway',
-]);
+export default function BackgroundRemoverPage() {
+  const relatedTools = getRelatedTools(TOOL.relatedSlugs);
 
-export default function BackgroundRemover() {
   return (
     <>
-      <Header />
-      <main className="min-h-screen bg-background">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
-
-          {/* Breadcrumb */}
-          <nav className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Link href="/" className="hover:text-foreground transition-colors">All Tools</Link>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <span className="text-foreground font-medium">Background Remover</span>
-          </nav>
-
-          <AdSlot variant="top" />
-
-          {/* Hero */}
-          <div className="mt-10 mb-12 text-center max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 text-xs font-semibold mb-6 border border-rose-200 dark:border-rose-800">
-              🚧 Coming Soon
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4 leading-tight tracking-tight">
-              Background Remover
-            </h1>
-
-            <p className="text-base text-muted-foreground leading-relaxed mb-8">
-              Automatically remove the background from your photo for Indian passport photos, govt ID
-              cards, and professional profile pictures. Free, browser-based, and completely private.
-            </p>
-
-            {/* Illustrated placeholder */}
-            <div className="mx-auto max-w-sm bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-950/20 dark:to-pink-950/20 border-2 border-dashed border-rose-200 dark:border-rose-800 rounded-2xl p-10 mb-8">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-2xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <p className="text-sm font-semibold text-rose-600 dark:text-rose-400">Tool Preview Coming Soon</p>
-                <p className="text-xs text-muted-foreground text-center">
-                  We&apos;re building AI-powered background removal that runs entirely in your browser.
-                </p>
-              </div>
-            </div>
-
-            {/* What's coming */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-              {[
-                { icon: '🎨', title: 'Auto Background Removal', desc: 'AI detects and removes backgrounds in one click.' },
-                { icon: '🏛️', title: 'Govt Photo Ready', desc: 'Output in white background — standard for Indian passport & ID photos.' },
-                { icon: '🔒', title: '100% Private', desc: 'All processing in your browser. No uploads, no data sharing.' },
-              ].map((f) => (
-                <div key={f.title} className="p-4 rounded-xl border border-border bg-card text-center">
-                  <div className="text-xl mb-2">{f.icon}</div>
-                  <p className="text-xs font-bold text-foreground mb-1">{f.title}</p>
-                  <p className="text-xs text-muted-foreground leading-snug">{f.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <AdSlot variant="section" />
-
-          {/* Related tools */}
-          <section className="mt-12 mb-12">
-            <h2 className="text-lg font-bold text-foreground mb-4">Available Tools You Can Use Now</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-              {relatedTools.map((tool) => (
-                <Link
-                  key={tool.slug}
-                  href={tool.href}
-                  className="group flex items-center gap-3 p-4 rounded-xl border border-border bg-card hover:border-primary/40 hover:shadow-sm transition-all"
-                >
-                  <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <span className="text-primary font-bold text-xs">{tool.badge.replace(/[^0-9KB]/g, '')}</span>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">{tool.title}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5 truncate">{tool.description.split('—')[0].trim()}</p>
-                  </div>
-                  <svg className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <FAQSection faqs={faqs} title="About Background Remover" />
-
-          <footer className="mt-12 pt-6 border-t border-border text-center text-xs text-muted-foreground">
-            © 2026 Microtools ·{' '}
-            <Link href="/" className="hover:text-foreground transition-colors">All Tools</Link>
-          </footer>
-        </div>
-      </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ToolLayout
+        h1="Background Remover — Free AI Tool"
+        intro="Remove the background from any photo instantly using AI. Perfect for Indian passport photos, government ID cards, UPSC/SSC/Railway profile pictures, and professional headshots. Supports JPG, PNG, and HEIC (iPhone photos). Download as a transparent PNG or a white-background JPG ready for official form submissions. Pair with our image compressor tools to meet any file-size requirement."
+        faqs={faqs}
+        relatedTools={relatedTools}
+      >
+        <BackgroundRemoverTool />
+      </ToolLayout>
     </>
   );
 }

@@ -306,6 +306,12 @@ self.__SERVER_FILES_MANIFEST={
     "turbopack": {
       "root": "C:\\Users\\rkgam\\OneDrive\\Desktop\\Projects\\microtools"
     },
+    "serverExternalPackages": [
+      "@imgly/background-removal-node",
+      "@huggingface/transformers",
+      "sharp",
+      "onnxruntime-node"
+    ],
     "distDirRoot": ".next"
   },
   "appDir": "C:\\Users\\rkgam\\OneDrive\\Desktop\\Projects\\microtools",

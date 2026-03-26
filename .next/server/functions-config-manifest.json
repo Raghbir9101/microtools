@@ -1,6 +1,9 @@
 {
   "version": 1,
   "functions": {
+    "/api/remove-background": {
+      "maxDuration": 120
+    },
     "/opengraph-image": {}
   }
 }

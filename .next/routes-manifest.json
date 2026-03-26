@@ -42,6 +42,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/api/remove-background",
+      "regex": "^/api/remove\\-background(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/remove\\-background(?:/)?$"
+    },
+    {
       "page": "/background-remover",
       "regex": "^/background\\-remover(?:/)?$",
       "routeKeys": {},

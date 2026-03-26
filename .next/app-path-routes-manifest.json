@@ -1,6 +1,7 @@
 {
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/api/remove-background/route": "/api/remove-background",
   "/background-remover/page": "/background-remover",
   "/opengraph-image/route": "/opengraph-image",
   "/page": "/",

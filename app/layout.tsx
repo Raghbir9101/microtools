@@ -115,6 +115,11 @@ export const metadata: Metadata = {
 
   // ── Category ─────────────────────────────────────────────────────────────
   category: 'technology',
+
+  // ── Google AdSense ───────────────────────────────────────────────────────
+  other: {
+    'google-adsense-account': 'ca-pub-5274802993197394',
+  },
 };
 
 export const viewport: Viewport = {

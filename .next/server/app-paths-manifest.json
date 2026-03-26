@@ -1,6 +1,7 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/remove-background/route": "app/api/remove-background/route.js",
   "/background-remover/page": "app/background-remover/page.js",
   "/opengraph-image/route": "app-edge-has-no-entrypoint",
   "/page": "app/page.js",

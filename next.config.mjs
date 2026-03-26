@@ -14,6 +14,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Prevent webpack from bundling native Node.js addons and ESM-only packages
+  serverExternalPackages: [
+    '@imgly/background-removal-node',
+    '@huggingface/transformers',
+    'sharp',
+    'onnxruntime-node',
+  ],
 }
 
 export default nextConfig
