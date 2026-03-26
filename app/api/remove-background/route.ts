@@ -51,9 +51,11 @@ export async function POST(request: NextRequest) {
     try {
       const imgBlob = new Blob([origBuf], { type: 'image/jpeg' });
       const fd = new FormData();
-      fd.append('image', imgBlob, 'image.jpg');
+      fd.append('file', imgBlob, 'image.jpg'); // Docker expects 'file'
 
-      const res = await fetch(`${WITHOUTBG_URL}/v1.0/image-without-background`, {
+      console.log(`[remove-bg] Attempting to call withoutBG Docker at: ${WITHOUTBG_URL}/api/remove-background`);
+
+      const res = await fetch(`${WITHOUTBG_URL}/api/remove-background`, {
         method: 'POST',
         body: fd,
         signal: AbortSignal.timeout(90_000),
@@ -61,10 +63,12 @@ export async function POST(request: NextRequest) {
 
       if (!res.ok) {
         const txt = await res.text().catch(() => res.statusText);
+        console.error(`[remove-bg] withoutBG Docker failed with status ${res.status}: ${txt}`);
         throw new Error(`withoutbg responded ${res.status}: ${txt}`);
       }
 
       const resultBuffer = Buffer.from(await res.arrayBuffer());
+      console.log('[remove-bg] Successfully processed via withoutBG Docker server.');
 
       return new NextResponse(new Uint8Array(resultBuffer), {
         status: 200,
@@ -73,10 +77,9 @@ export async function POST(request: NextRequest) {
 
     } catch (dockerErr) {
       // ── Fallback: RMBG-1.4 (when Docker not running) ──────────────────
-      console.warn(
-        '[remove-bg] withoutbg Docker unavailable, falling back to RMBG-1.4.',
-        dockerErr instanceof Error ? dockerErr.message : dockerErr
-      );
+      const errMsg = dockerErr instanceof Error ? dockerErr.message : String(dockerErr);
+      console.warn(`[remove-bg] Fallback triggered. Reason: ${errMsg}`);
+      console.warn('[remove-bg] Using local RMBG-1.4 model instead.');
 
       const { removeBackgroundRMBG } = await import('@/lib/rmbg');
       const resultBuffer = await removeBackgroundRMBG(origBuf);
