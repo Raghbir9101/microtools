@@ -13,4 +13,8 @@ next.user-config.*
 # Common ignores
 node_modules
 .DS_Store
+
+# Next.js build output (never commit these)
+.next/
+out/
 .next
