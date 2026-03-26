@@ -1,0 +1,50 @@
+{
+  "name": "Microtools — Free Online Tools for Govt Forms",
+  "short_name": "Microtools",
+  "description": "Free browser-based tools: compress images for SSC, UPSC, and Railway exam forms. No signup required.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "lang": "en-IN",
+  "scope": "/",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "/icon-light-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Compress for SSC (20KB)",
+      "short_name": "SSC 20KB",
+      "description": "Compress photo to 20KB for SSC exam forms",
+      "url": "/resize-image-20kb-ssc",
+      "icons": [{ "src": "/icon-light-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Compress for UPSC (50KB)",
+      "short_name": "UPSC 50KB",
+      "description": "Compress photo to 50KB for UPSC exam forms",
+      "url": "/resize-image-50kb-upsc",
+      "icons": [{ "src": "/icon-light-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Compress for Railway (100KB)",
+      "short_name": "Railway 100KB",
+      "description": "Compress photo to 100KB for Railway exam forms",
+      "url": "/resize-image-100kb-railway",
+      "icons": [{ "src": "/icon-light-32x32.png", "sizes": "32x32" }]
+    }
+  ]
+}

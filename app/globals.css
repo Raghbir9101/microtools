@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(0.985 0.002 263);
+  --foreground: oklch(0.18 0.015 263);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.015 263);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.015 263);
+  --primary: oklch(0.52 0.18 263);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.025 263);
+  --secondary-foreground: oklch(0.3 0.06 263);
+  --muted: oklch(0.93 0.012 263);
+  --muted-foreground: oklch(0.5 0.025 263);
+  --accent: oklch(0.48 0.16 263);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0.012 263);
+  --input: oklch(0.97 0.01 263);
+  --ring: oklch(0.52 0.18 263);
+  --success: oklch(0.56 0.15 150);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.72 0.18 80);
+  --chart-1: oklch(0.52 0.18 263);
+  --chart-2: oklch(0.65 0.13 180);
+  --chart-3: oklch(0.75 0.11 80);
+  --chart-4: oklch(0.55 0.14 50);
+  --chart-5: oklch(0.7 0.12 320);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.18 0.015 263);
+  --sidebar-primary: oklch(0.52 0.18 263);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.95 0.025 263);
+  --sidebar-accent-foreground: oklch(0.3 0.06 263);
+  --sidebar-border: oklch(0.9 0.012 263);
+  --sidebar-ring: oklch(0.52 0.18 263);
+}
+
+.dark {
+  --background: oklch(0.13 0.012 263);
+  --foreground: oklch(0.95 0.01 263);
+  --card: oklch(0.18 0.012 263);
+  --card-foreground: oklch(0.95 0.01 263);
+  --popover: oklch(0.18 0.012 263);
+  --popover-foreground: oklch(0.95 0.01 263);
+  --primary: oklch(0.65 0.17 263);
+  --primary-foreground: oklch(0.13 0.012 263);
+  --secondary: oklch(0.26 0.022 263);
+  --secondary-foreground: oklch(0.95 0.01 263);
+  --muted: oklch(0.26 0.022 263);
+  --muted-foreground: oklch(0.63 0.022 263);
+  --accent: oklch(0.65 0.17 263);
+  --accent-foreground: oklch(0.13 0.012 263);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.95 0.01 263);
+  --border: oklch(0.26 0.022 263);
+  --input: oklch(0.26 0.022 263);
+  --ring: oklch(0.65 0.17 263);
+  --success: oklch(0.6 0.15 150);
+  --success-foreground: oklch(0.13 0.012 263);
+  --chart-1: oklch(0.65 0.17 263);
+  --chart-2: oklch(0.65 0.13 180);
+  --chart-3: oklch(0.75 0.11 80);
+  --chart-4: oklch(0.55 0.14 50);
+  --chart-5: oklch(0.7 0.12 320);
+  --sidebar: oklch(0.18 0.012 263);
+  --sidebar-foreground: oklch(0.95 0.01 263);
+  --sidebar-primary: oklch(0.65 0.17 263);
+  --sidebar-primary-foreground: oklch(0.18 0.012 263);
+  --sidebar-accent: oklch(0.26 0.022 263);
+  --sidebar-accent-foreground: oklch(0.95 0.01 263);
+  --sidebar-border: oklch(0.26 0.022 263);
+  --sidebar-ring: oklch(0.65 0.17 263);
+}
+
+@theme inline {
+  --font-sans: 'Inter', 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Geist', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  /* Gradient text utility */
+  .gradient-text {
+    background: linear-gradient(135deg, oklch(0.52 0.18 263), oklch(0.55 0.2 285));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glassmorphic card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .dark .glass-card {
+    background: rgba(24, 24, 40, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Smooth entrance animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.4s ease-out both;
+  }
+
+  /* Pulse ring */
+  @keyframes pulseRing {
+    0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3); }
+    70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+  }
+
+  .pulse-ring {
+    animation: pulseRing 2s ease-out infinite;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.8 0.02 263);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.6 0.05 263);
+  }
+}

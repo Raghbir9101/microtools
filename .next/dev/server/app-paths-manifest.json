@@ -1,0 +1,9 @@
+{
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/page": "app/page.js",
+  "/background-remover/page": "app/background-remover/page.js",
+  "/resize-image-100kb/page": "app/resize-image-100kb/page.js",
+  "/resize-image-50kb-upsc/page": "app/resize-image-50kb-upsc/page.js",
+  "/resize-image-100kb-railway/page": "app/resize-image-100kb-railway/page.js"
+}

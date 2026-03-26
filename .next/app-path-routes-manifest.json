@@ -1,0 +1,16 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/background-remover/page": "/background-remover",
+  "/opengraph-image/route": "/opengraph-image",
+  "/page": "/",
+  "/resize-image-100kb-railway/page": "/resize-image-100kb-railway",
+  "/resize-image-100kb/page": "/resize-image-100kb",
+  "/resize-image-10kb/page": "/resize-image-10kb",
+  "/resize-image-20kb-ssc/page": "/resize-image-20kb-ssc",
+  "/resize-image-20kb/page": "/resize-image-20kb",
+  "/resize-image-50kb-upsc/page": "/resize-image-50kb-upsc",
+  "/resize-image-50kb/page": "/resize-image-50kb",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml"
+}
