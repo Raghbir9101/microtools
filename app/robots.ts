@@ -6,10 +6,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/'],
+        disallow: ['/api/'],
       },
     ],
     sitemap: 'https://tools.draftly.co.in/sitemap.xml',
-    host: 'https://tools.draftly.co.in',
   };
 }
