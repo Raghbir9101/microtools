@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('image') as File | null;
+    const mode = (formData.get('mode') as string | null) ?? 'fast'; // 'fast' | 'quality'
 
     if (!file) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 });
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     let origBuf = Buffer.from(arrayBuffer);
 
-    // Auto-convert HEIC → JPEG before sending to withoutbg
+    // Auto-convert HEIC → JPEG
     const sharp = (await import('sharp')).default;
     const meta = await sharp(origBuf).metadata().catch(() => null);
 
@@ -48,7 +49,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-
     // ── Shared helper: POST image to a local microservice ─────────────────
     const callService = async (url: string, field: string): Promise<Buffer> => {
       const fd = new FormData();
@@ -63,19 +63,21 @@ export async function POST(request: NextRequest) {
       headers: { 'Content-Type': 'image/png', 'Cache-Control': 'no-store' },
     });
 
-    // ── Tier 1: BiRefNet Python server (best quality) ─────────────────────
-    try {
-      console.log(`[remove-bg] Tier 1 → BiRefNet at ${BIREFNET_URL}/remove-background`);
-      const buf = await callService(`${BIREFNET_URL}/remove-background`, 'file');
-      console.log('[remove-bg] ✓ BiRefNet succeeded.');
-      return respond(buf);
-    } catch (e) {
-      console.warn(`[remove-bg] BiRefNet unavailable: ${(e as Error).message}`);
+    // ── Quality mode: BiRefNet first (best quality, slower) ───────────────
+    if (mode === 'quality') {
+      try {
+        console.log(`[remove-bg] Quality mode → BiRefNet at ${BIREFNET_URL}/remove-background`);
+        const buf = await callService(`${BIREFNET_URL}/remove-background`, 'file');
+        console.log('[remove-bg] ✓ BiRefNet succeeded.');
+        return respond(buf);
+      } catch (e) {
+        console.warn(`[remove-bg] BiRefNet unavailable: ${(e as Error).message} — falling back to withoutBG`);
+      }
     }
 
-    // ── Tier 2: withoutBG Docker (Focus model) ────────────────────────────
+    // ── Fast mode (default) / Quality fallback: withoutBG Docker ──────────
     try {
-      console.log(`[remove-bg] Tier 2 → withoutBG Docker at ${WITHOUTBG_URL}/api/remove-background`);
+      console.log(`[remove-bg] ${mode === 'fast' ? 'Fast' : 'Quality fallback'} → withoutBG Docker`);
       const buf = await callService(`${WITHOUTBG_URL}/api/remove-background`, 'file');
       console.log('[remove-bg] ✓ withoutBG Docker succeeded.');
       return respond(buf);
@@ -83,8 +85,8 @@ export async function POST(request: NextRequest) {
       console.warn(`[remove-bg] withoutBG Docker unavailable: ${(e as Error).message}`);
     }
 
-    // ── Tier 3: RMBG-1.4 local Node.js (always available) ────────────────
-    console.warn('[remove-bg] Tier 3 → falling back to local RMBG-1.4.');
+    // ── Final fallback: RMBG-1.4 local Node.js ────────────────────────────
+    console.warn('[remove-bg] Final fallback → local RMBG-1.4.');
     const { removeBackgroundRMBG } = await import('@/lib/rmbg');
     return respond(await removeBackgroundRMBG(origBuf));
 

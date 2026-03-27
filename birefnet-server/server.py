@@ -2,12 +2,16 @@
 BiRefNet background removal server — FastAPI
 Loads ZhengPeng7/BiRefNet once at startup; serves POST /remove-background.
 CPU-optimised (no GPU required). Model download ~350MB on first run.
+
+Concurrency: max 2 slots (1 active + 1 queued). Returns 503 when busy
+so callers fail fast instead of timing out after 90+ seconds.
 """
 
 import io
 import logging
 import os
 import sys
+import threading
 
 import torch
 import torchvision.transforms as T
@@ -26,9 +30,10 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ── Config ───────────────────────────────────────────────────────────────────
-PORT = int(os.getenv("PORT", "8089"))
-MODEL_ID = os.getenv("BIREFNET_MODEL", "ZhengPeng7/BiRefNet")
+PORT       = int(os.getenv("PORT",                "8089"))
+MODEL_ID   = os.getenv("BIREFNET_MODEL",          "ZhengPeng7/BiRefNet")
 RESOLUTION = int(os.getenv("BIREFNET_RESOLUTION", "1024"))
+MAX_QUEUE  = int(os.getenv("BIREFNET_MAX_QUEUE",  "2"))   # active + waiting slots
 
 # Use all available CPU cores for PyTorch
 torch.set_num_threads(os.cpu_count() or 4)
@@ -45,21 +50,30 @@ birefnet.eval()
 log.info("Model loaded and ready.")
 
 # ── Image transform (must match BiRefNet training pre-processing) ─────────────
-transform = T.Compose(
-    [
-        T.Resize((RESOLUTION, RESOLUTION)),
-        T.ToTensor(),
-        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-    ]
-)
+transform = T.Compose([
+    T.Resize((RESOLUTION, RESOLUTION)),
+    T.ToTensor(),
+    T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+])
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
 app = FastAPI(title="BiRefNet API", version="1.0.0")
 
+# Concurrency gate: reject excess requests immediately instead of queuing forever
+_sem        = threading.Semaphore(MAX_QUEUE)
+_active     = 0
+_active_lock = threading.Lock()
+
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "model": MODEL_ID, "resolution": RESOLUTION}
+    return {
+        "status": "ok",
+        "model": MODEL_ID,
+        "resolution": RESOLUTION,
+        "active_jobs": _active,
+        "max_queue": MAX_QUEUE,
+    }
 
 
 @app.post("/remove-background")
@@ -67,42 +81,62 @@ async def remove_background(file: UploadFile = File(...)):
     """
     Accept a multipart image upload (`file` field),
     return a transparent PNG with the background removed.
+    Returns 503 immediately when the concurrency limit is reached.
     """
-    # ── Read & validate ───────────────────────────────────────────────────────
-    data = await file.read()
-    try:
-        image = Image.open(io.BytesIO(data)).convert("RGB")
-    except Exception as exc:
-        raise HTTPException(status_code=400, detail=f"Cannot read image: {exc}")
+    global _active
 
-    orig_w, orig_h = image.size
-    log.info(f"Processing {orig_w}×{orig_h} image…")
-
-    # ── Inference ─────────────────────────────────────────────────────────────
-    try:
-        tensor = transform(image).unsqueeze(0).float()   # ensure fp32 on CPU
-        with torch.inference_mode():
-            preds = birefnet(tensor)[-1].sigmoid()      # [1, 1, H, W]
-
-        # Squeeze to [H, W] probability mask, resize to original
-        mask_tensor = preds[0].squeeze()                # [H, W]
-        mask = T.ToPILImage()(mask_tensor).resize(
-            (orig_w, orig_h), Image.LANCZOS
+    # Non-blocking — fail fast if all slots are occupied
+    if not _sem.acquire(blocking=False):
+        raise HTTPException(
+            status_code=503,
+            detail=f"Server busy (max {MAX_QUEUE} concurrent jobs). Please try again shortly.",
         )
-    except Exception as exc:
-        log.exception("Inference failed")
-        raise HTTPException(status_code=500, detail=f"Inference error: {exc}")
 
-    # ── Compose transparent PNG ───────────────────────────────────────────────
-    result = image.copy().convert("RGBA")
-    result.putalpha(mask)
+    with _active_lock:
+        _active += 1
+    log.info(f"Job started — {_active}/{MAX_QUEUE} slots in use.")
 
-    out = io.BytesIO()
-    result.save(out, format="PNG", optimize=True)
-    out.seek(0)
+    try:
+        # ── Read & validate ───────────────────────────────────────────────────
+        data = await file.read()
+        try:
+            image = Image.open(io.BytesIO(data)).convert("RGB")
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail=f"Cannot read image: {exc}")
 
-    log.info("Done — returning transparent PNG.")
-    return Response(content=out.read(), media_type="image/png")
+        orig_w, orig_h = image.size
+        log.info(f"Processing {orig_w}×{orig_h} image…")
+
+        # ── Inference ─────────────────────────────────────────────────────────
+        try:
+            tensor = transform(image).unsqueeze(0).float()   # ensure fp32 on CPU
+            with torch.inference_mode():
+                preds = birefnet(tensor)[-1].sigmoid()       # [1, 1, H, W]
+
+            mask_tensor = preds[0].squeeze()                 # [H, W]
+            mask = T.ToPILImage()(mask_tensor).resize(
+                (orig_w, orig_h), Image.LANCZOS
+            )
+        except Exception as exc:
+            log.exception("Inference failed")
+            raise HTTPException(status_code=500, detail=f"Inference error: {exc}")
+
+        # ── Compose transparent PNG ───────────────────────────────────────────
+        result = image.copy().convert("RGBA")
+        result.putalpha(mask)
+
+        out = io.BytesIO()
+        result.save(out, format="PNG", optimize=True)
+        out.seek(0)
+
+        log.info("Done — returning transparent PNG.")
+        return Response(content=out.read(), media_type="image/png")
+
+    finally:
+        _sem.release()
+        with _active_lock:
+            _active -= 1
+        log.info(f"Job finished — {_active}/{MAX_QUEUE} slots in use.")
 
 
 if __name__ == "__main__":
