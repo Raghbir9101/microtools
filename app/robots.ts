@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/'],
       },
     ],
-    sitemap: 'https://tools.draftly.co.in/sitemap.xml',
+    sitemap: 'https://tools.draftly.co.in/sitemap_tools.xml',
   };
 }
