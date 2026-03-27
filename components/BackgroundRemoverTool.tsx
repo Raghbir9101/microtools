@@ -25,18 +25,43 @@ export default function BackgroundRemoverTool() {
   const [bgColor, setBgColor] = useState<BgColor>('transparent');
   const [customColor, setCustomColor] = useState('#ffffff');
   const [showOriginal, setShowOriginal] = useState(false);
+  const [previewFailed, setPreviewFailed] = useState(false);
 
 
   const stepIndex = steps.findIndex((s) => s.id === step);
 
+  // Called async when heic2any finishes converting the HEIC preview
+  const handlePreviewReady = useCallback((dataUrl: string) => {
+    setOriginalPreview(dataUrl);
+    setPreviewFailed(false); // now we have a valid JPEG URL, clear the error
+  }, []);
+
   const handleImageSelect = useCallback(async (file: File, preview: string) => {
     setSelectedFile(file);
     setOriginalPreview(preview);
+    setPreviewFailed(false);
     setResultBlob(null);
     setResultPreview('');
     setError(null);
     setProgressMsg('Uploading image to server…');
     setStep('processing');
+
+    // For HEIC/HEIF: fetch a server-converted preview in parallel (fast, ~1-2s)
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+    const isHeic = ['heic', 'heif'].includes(ext) || ['image/heic', 'image/heif'].includes(file.type);
+    if (isHeic) {
+      const previewForm = new FormData();
+      previewForm.append('image', file);
+      fetch('/api/preview', { method: 'POST', body: previewForm })
+        .then(async (res) => {
+          if (!res.ok) return;
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          setOriginalPreview(url);
+          setPreviewFailed(false);
+        })
+        .catch(() => {}); // preview failure is non-critical
+    }
 
     try {
       const formData = new FormData();
@@ -171,7 +196,10 @@ export default function BackgroundRemoverTool() {
         {/* Upload Step */}
         {step === 'upload' && (
           <div className="animate-fade-in-up space-y-4">
-            <ImageUploader onImageSelect={handleImageSelect} />
+            <ImageUploader
+              onImageSelect={handleImageSelect}
+              onPreviewReady={handlePreviewReady}
+            />
             {error && (
               <div className="flex items-start gap-2 p-3 rounded-lg bg-destructive/8 border border-destructive/20 text-destructive text-sm">
                 <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,14 +217,27 @@ export default function BackgroundRemoverTool() {
         {/* Processing Step */}
         {step === 'processing' && (
           <div className="animate-fade-in-up">
-            {originalPreview && (
-              <div className="mb-6 flex justify-center">
-                <div className="relative w-48 h-48 rounded-xl overflow-hidden border border-border flex items-center justify-center bg-muted/30">
-                  <img src={originalPreview} alt="Original" className="w-full h-full object-contain" />
+            <div className="mb-6 flex justify-center">
+              <div className="relative w-48 h-48 rounded-xl overflow-hidden border border-border flex items-center justify-center bg-muted/30">
+                  {/* Pulse overlay sits BEHIND content */}
                   <div className="absolute inset-0 bg-rose-500/10 animate-pulse" />
+                  {originalPreview && !previewFailed ? (
+                    <img
+                      src={originalPreview}
+                      alt="Original"
+                      className="relative z-10 w-full h-full object-contain"
+                      onError={() => setPreviewFailed(true)}
+                    />
+                  ) : (
+                    <div className="relative z-10 flex flex-col items-center gap-2 text-muted-foreground">
+                      <svg className="w-12 h-12 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span className="text-xs">Preparing preview…</span>
+                    </div>
+                  )}
                 </div>
-              </div>
-            )}
+            </div>
             <div className="space-y-4">
               <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
                 <div className="h-full rounded-full bg-gradient-to-r from-rose-500 to-pink-500 animate-pulse" style={{ width: '100%' }} />

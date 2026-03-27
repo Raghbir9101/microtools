@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
 
+const BIREFNET_URL  = process.env.BIREFNET_URL  ?? 'http://localhost:8089';
 const WITHOUTBG_URL = process.env.WITHOUTBG_URL ?? 'http://localhost:8088';
 
 export async function POST(request: NextRequest) {
@@ -47,48 +48,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ── Try withoutbg Docker container ────────────────────────────────────
-    try {
-      const imgBlob = new Blob([origBuf], { type: 'image/jpeg' });
+
+    // ── Shared helper: POST image to a local microservice ─────────────────
+    const callService = async (url: string, field: string): Promise<Buffer> => {
       const fd = new FormData();
-      fd.append('file', imgBlob, 'image.jpg'); // Docker expects 'file'
+      fd.append(field, new Blob([origBuf], { type: 'image/jpeg' }), 'image.jpg');
+      const res = await fetch(url, { method: 'POST', body: fd, signal: AbortSignal.timeout(90_000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text().catch(() => res.statusText)}`);
+      return Buffer.from(await res.arrayBuffer());
+    };
 
-      console.log(`[remove-bg] Attempting to call withoutBG Docker at: ${WITHOUTBG_URL}/api/remove-background`);
+    const respond = (buf: Buffer) => new NextResponse(new Uint8Array(buf), {
+      status: 200,
+      headers: { 'Content-Type': 'image/png', 'Cache-Control': 'no-store' },
+    });
 
-      const res = await fetch(`${WITHOUTBG_URL}/api/remove-background`, {
-        method: 'POST',
-        body: fd,
-        signal: AbortSignal.timeout(90_000),
-      });
-
-      if (!res.ok) {
-        const txt = await res.text().catch(() => res.statusText);
-        console.error(`[remove-bg] withoutBG Docker failed with status ${res.status}: ${txt}`);
-        throw new Error(`withoutbg responded ${res.status}: ${txt}`);
-      }
-
-      const resultBuffer = Buffer.from(await res.arrayBuffer());
-      console.log('[remove-bg] Successfully processed via withoutBG Docker server.');
-
-      return new NextResponse(new Uint8Array(resultBuffer), {
-        status: 200,
-        headers: { 'Content-Type': 'image/png', 'Cache-Control': 'no-store' },
-      });
-
-    } catch (dockerErr) {
-      // ── Fallback: RMBG-1.4 (when Docker not running) ──────────────────
-      const errMsg = dockerErr instanceof Error ? dockerErr.message : String(dockerErr);
-      console.warn(`[remove-bg] Fallback triggered. Reason: ${errMsg}`);
-      console.warn('[remove-bg] Using local RMBG-1.4 model instead.');
-
-      const { removeBackgroundRMBG } = await import('@/lib/rmbg');
-      const resultBuffer = await removeBackgroundRMBG(origBuf);
-
-      return new NextResponse(new Uint8Array(resultBuffer), {
-        status: 200,
-        headers: { 'Content-Type': 'image/png', 'Cache-Control': 'no-store' },
-      });
+    // ── Tier 1: BiRefNet Python server (best quality) ─────────────────────
+    try {
+      console.log(`[remove-bg] Tier 1 → BiRefNet at ${BIREFNET_URL}/remove-background`);
+      const buf = await callService(`${BIREFNET_URL}/remove-background`, 'file');
+      console.log('[remove-bg] ✓ BiRefNet succeeded.');
+      return respond(buf);
+    } catch (e) {
+      console.warn(`[remove-bg] BiRefNet unavailable: ${(e as Error).message}`);
     }
+
+    // ── Tier 2: withoutBG Docker (Focus model) ────────────────────────────
+    try {
+      console.log(`[remove-bg] Tier 2 → withoutBG Docker at ${WITHOUTBG_URL}/api/remove-background`);
+      const buf = await callService(`${WITHOUTBG_URL}/api/remove-background`, 'file');
+      console.log('[remove-bg] ✓ withoutBG Docker succeeded.');
+      return respond(buf);
+    } catch (e) {
+      console.warn(`[remove-bg] withoutBG Docker unavailable: ${(e as Error).message}`);
+    }
+
+    // ── Tier 3: RMBG-1.4 local Node.js (always available) ────────────────
+    console.warn('[remove-bg] Tier 3 → falling back to local RMBG-1.4.');
+    const { removeBackgroundRMBG } = await import('@/lib/rmbg');
+    return respond(await removeBackgroundRMBG(origBuf));
 
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

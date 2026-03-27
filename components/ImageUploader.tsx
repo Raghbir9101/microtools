@@ -4,9 +4,10 @@ import { useRef, useState } from 'react';
 
 interface ImageUploaderProps {
   onImageSelect: (file: File, preview: string) => void;
+  onPreviewReady?: (dataUrl: string) => void;
 }
 
-export default function ImageUploader({ onImageSelect }: ImageUploaderProps) {
+export default function ImageUploader({ onImageSelect, onPreviewReady }: ImageUploaderProps) {
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -58,25 +59,32 @@ export default function ImageUploader({ onImageSelect }: ImageUploaderProps) {
       ['image/heic', 'image/heif'].includes(file.type);
 
     if (isHeic) {
-      // Browser can't display HEIC — convert to JPEG blob just for the preview
+      // Instant blob URL preview — Safari shows HEIC natively, Chrome shows camera icon (onError)
+      const blobUrl = URL.createObjectURL(file);
+      onImageSelect(file, blobUrl);
+      // In the background: convert to JPEG for Chrome/non-Safari preview
       import('heic2any').then(({ default: heic2any }) => {
-        heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 })
+        console.log('[HEIC] Starting heic2any conversion for preview…');
+        heic2any({ blob: file, toType: 'image/jpeg', quality: 0.8 })
           .then((result) => {
+            console.log('[HEIC] heic2any conversion complete, updating preview.');
             const jpegBlob = Array.isArray(result) ? result[0] : result;
-            const url = URL.createObjectURL(jpegBlob);
-            onImageSelect(file, url); // send original HEIC to server, JPEG preview for display
+            const jpegUrl = URL.createObjectURL(jpegBlob);
+            URL.revokeObjectURL(blobUrl);
+            onPreviewReady?.(jpegUrl);
           })
-          .catch(() => setError('Could not preview HEIC image. Upload will still work.'));
+          .catch((err) => {
+            console.warn('[HEIC] heic2any failed:', err);
+          });
+      }).catch((err) => {
+        console.warn('[HEIC] heic2any import failed:', err);
       });
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const preview = e.target?.result as string;
-      onImageSelect(file, preview);
-    };
-    reader.readAsDataURL(file);
+    // Regular formats: instant blob URL preview (no FileReader needed)
+    const blobUrl = URL.createObjectURL(file);
+    onImageSelect(file, blobUrl);
   };
 
   return (
