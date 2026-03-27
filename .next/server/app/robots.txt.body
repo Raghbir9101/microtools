@@ -1,7 +1,5 @@
 User-Agent: *
 Allow: /
 Disallow: /api/
-Disallow: /_next/
 
-Host: https://tools.draftly.co.in
 Sitemap: https://tools.draftly.co.in/sitemap.xml
