@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
+import Footer from '@/components/Footer';
 import './globals.css';
 
 const SITE_URL = 'https://tools.draftly.co.in';
@@ -178,6 +179,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="font-sans antialiased">
         {children}
+        <Footer />
         <Analytics />
       </body>
     </html>

@@ -213,24 +213,8 @@ export default function Home() {
             <FAQSection faqs={homeFaqs} title="Frequently Asked Questions" />
           </section>
 
-          {/* ── Footer ───────────────────────────────────────────────────── */}
-          <footer className="mt-16 pt-8 border-t border-border">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-muted-foreground">
-              <p>© 2026 Microtools · All rights reserved</p>
-              <nav className="flex flex-wrap items-center gap-4">
-                {TOOLS.filter((t) => t.status === 'live').map((t) => (
-                  <Link key={t.slug} href={t.href} className="hover:text-foreground transition-colors">
-                    {t.title}
-                  </Link>
-                ))}
-              </nav>
-              <nav className="flex items-center gap-4">
-                <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
-                <Link href="/privacy-policy" className="hover:text-foreground transition-colors">Privacy</Link>
-                <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
-              </nav>
-            </div>
-          </footer>
+
+
 
         </div>
       </main>

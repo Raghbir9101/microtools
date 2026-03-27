@@ -35,6 +35,12 @@ export default function Header() {
             >
               All Tools
             </Link>
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted px-4 py-2 rounded-lg transition-all"
+            >
+              Blog
+            </Link>
           </nav>
 
           {/* Mobile hamburger */}
@@ -63,6 +69,13 @@ export default function Header() {
             className="block text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted px-3 py-2 rounded-lg transition-all"
           >
             All Tools
+          </Link>
+          <Link
+            href="/blog"
+            onClick={() => setMobileOpen(false)}
+            className="block text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted px-3 py-2 rounded-lg transition-all"
+          >
+            Blog
           </Link>
         </div>
       )}
