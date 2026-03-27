@@ -50,7 +50,32 @@ const accentConfig = {
     cta: 'text-amber-600 dark:text-amber-400',
     pill: 'bg-amber-500',
   },
+  cyan: {
+    size: 'text-cyan-600 dark:text-cyan-400',
+    badge: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300',
+    border: 'hover:border-cyan-400',
+    bg: 'hover:bg-cyan-50 dark:hover:bg-cyan-950/20',
+    cta: 'text-cyan-600 dark:text-cyan-400',
+    pill: 'bg-cyan-500',
+  },
+  pink: {
+    size: 'text-pink-600 dark:text-pink-400',
+    badge: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
+    border: 'hover:border-pink-400',
+    bg: 'hover:bg-pink-50 dark:hover:bg-pink-950/20',
+    cta: 'text-pink-600 dark:text-pink-400',
+    pill: 'bg-pink-500',
+  },
+  slate: {
+    size: 'text-slate-600 dark:text-slate-400',
+    badge: 'bg-slate-100 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300',
+    border: 'hover:border-slate-400',
+    bg: 'hover:bg-slate-50 dark:hover:bg-slate-950/20',
+    cta: 'text-slate-600 dark:text-slate-400',
+    pill: 'bg-slate-500',
+  },
 };
+
 
 interface ToolCardProps {
   tool: Tool;

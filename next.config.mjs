@@ -26,6 +26,21 @@ const nextConfig = {
       bodySizeLimit: '15mb',
     },
   },
+  async headers() {
+    return [
+      {
+        // Tell Cloudflare/CDNs not to re-encode (zstd) the sitemap.
+        // Google's sitemap fetcher only supports gzip/br, not zstd.
+        source: '/sitemap.xml',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, no-transform',
+          },
+        ],
+      },
+    ];
+  },
 }
 
 export default nextConfig

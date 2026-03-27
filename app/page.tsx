@@ -57,6 +57,8 @@ export default function Home() {
   const imageTools = getToolsByCategory('image');
   const pdfTools = getToolsByCategory('pdf');
   const videoTools = getToolsByCategory('video');
+  const utilityTools = getToolsByCategory('utility');
+  const socialTools = getToolsByCategory('social');
 
   return (
     <>
@@ -103,7 +105,7 @@ export default function Home() {
           {/* ── Stats bar ────────────────────────────────────────────────── */}
           <div className="mb-16 grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { value: '8+', label: 'Tools Available' },
+              { value: '9+', label: 'Tools Available' },
               { value: '100%', label: 'Browser-Based' },
               { value: '0 ₹', label: 'Always Free' },
               { value: '±2KB', label: 'Compression Tolerance' },
@@ -135,6 +137,24 @@ export default function Home() {
               title={CATEGORIES.pdf.label}
               description={CATEGORIES.pdf.description}
               tools={pdfTools}
+            />
+
+            <AdSlot variant="section" />
+
+            <CategorySection
+              id="utility-tools"
+              emoji={CATEGORIES.utility.emoji}
+              title={CATEGORIES.utility.label}
+              description={CATEGORIES.utility.description}
+              tools={utilityTools}
+            />
+
+            <CategorySection
+              id="social-tools"
+              emoji={CATEGORIES.social.emoji}
+              title={CATEGORIES.social.label}
+              description={CATEGORIES.social.description}
+              tools={socialTools}
             />
 
             <CategorySection
@@ -195,7 +215,7 @@ export default function Home() {
 
           {/* ── Footer ───────────────────────────────────────────────────── */}
           <footer className="mt-16 pt-8 border-t border-border">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-muted-foreground">
               <p>© 2026 Microtools · All rights reserved</p>
               <nav className="flex flex-wrap items-center gap-4">
                 {TOOLS.filter((t) => t.status === 'live').map((t) => (
@@ -203,6 +223,11 @@ export default function Home() {
                     {t.title}
                   </Link>
                 ))}
+              </nav>
+              <nav className="flex items-center gap-4">
+                <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
+                <Link href="/privacy-policy" className="hover:text-foreground transition-colors">Privacy</Link>
+                <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
               </nav>
             </div>
           </footer>
