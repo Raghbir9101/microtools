@@ -65,13 +65,9 @@ export const metadata: Metadata = {
 
   // ── Favicons / Icons ──────────────────────────────────────────────────────
   icons: {
-    icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)', sizes: '32x32' },
-      { url: '/icon-dark-32x32.png',  media: '(prefers-color-scheme: dark)',  sizes: '32x32' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
-    apple: [{ url: '/apple-icon.png', sizes: '180x180' }],
-    shortcut: '/icon.svg',
+    icon: '/logo.png',
+    apple: '/logo.png',
+    shortcut: '/logo.png',
   },
 
   // ── Open Graph ────────────────────────────────────────────────────────────

@@ -13,11 +13,8 @@ export default function Header() {
 
           {/* Logo → homepage */}
           <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-              <svg className="w-5 h-5 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                <circle cx="7" cy="7" r="1.5" />
-              </svg>
+            <div className="w-9 h-9 rounded-xl overflow-hidden shadow-md group-hover:scale-105 transition-transform flex-shrink-0 bg-white border border-border/50">
+              <img src="/logo.png" alt="Microtools logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <span className="font-bold text-base text-foreground group-hover:text-primary transition-colors leading-none block">
