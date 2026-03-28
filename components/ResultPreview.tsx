@@ -14,6 +14,7 @@ interface ResultPreviewProps {
   success: boolean;
   error?: string;
   onReset: () => void;
+  portalContext?: 'ssc' | 'ibps' | 'railway' | 'signature' | 'upsc' | 'generic';
 }
 
 export default function ResultPreview({
@@ -27,6 +28,7 @@ export default function ResultPreview({
   success,
   error,
   onReset,
+  portalContext = 'generic',
 }: ResultPreviewProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [compressedPreviewUrl, setCompressedPreviewUrl] = useState<string>('');
@@ -50,9 +52,81 @@ export default function ResultPreview({
 
   const savingsBytes = originalSize - compressedSize;
   const isWithinTolerance = Math.abs(compressedSize - targetSizeKB * 1024) <= 2 * 1024;
+  const isGenuinelyUnder = compressedSize <= targetSizeKB * 1024;
+
+  // Portal-specific acceptance copy
+  const PORTAL_LABELS: Record<string, { name: string; requirement: string }> = {
+    ssc:       { name: 'SSC Portal',          requirement: `Max ${targetSizeKB}KB · JPEG · White background` },
+    ibps:      { name: 'IBPS / SBI Portal',   requirement: `Max ${targetSizeKB}KB · JPEG format` },
+    railway:   { name: 'RRB / Railway Portal', requirement: `Max ${targetSizeKB}KB · JPEG format` },
+    signature: { name: 'Exam Portal Signature', requirement: `Max ${targetSizeKB}KB · JPEG · 140×60px` },
+    upsc:      { name: 'UPSC Portal',         requirement: `Max ${targetSizeKB}KB · JPEG format` },
+    generic:   { name: 'Portal Upload',       requirement: `Max ${targetSizeKB}KB · JPEG format` },
+  };
+  const portal = PORTAL_LABELS[portalContext] ?? PORTAL_LABELS.generic;
+
+  type ConfidenceTier = 'pass' | 'borderline' | 'fail';
+  const getConfidence = (): ConfidenceTier => {
+    if (!success && !isWithinTolerance) return 'fail';
+    if (isGenuinelyUnder) return 'pass';
+    return 'borderline';
+  };
+  const confidence = getConfidence();
+
+  const confidenceConfig = {
+    pass: {
+      icon: '✅',
+      label: `Accepted — Safe for ${portal.name}`,
+      sub: portal.requirement,
+      bg: 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700',
+      tc: 'text-emerald-700 dark:text-emerald-300',
+      sc: 'text-emerald-600 dark:text-emerald-400',
+    },
+    borderline: {
+      icon: '⚠️',
+      label: 'Borderline — Likely accepted, verify manually',
+      sub: `File is ${(compressedSize / 1024).toFixed(1)}KB — within ±2KB of target. Most portals accept this range.`,
+      bg: 'bg-yellow-50 dark:bg-yellow-950/30 border-yellow-300 dark:border-yellow-700',
+      tc: 'text-yellow-700 dark:text-yellow-300',
+      sc: 'text-yellow-600 dark:text-yellow-400',
+    },
+    fail: {
+      icon: '❌',
+      label: 'Will likely be rejected by portal',
+      sub: `Could not reach ${targetSizeKB}KB. Try a lower target or use a higher-resolution original photo.`,
+      bg: 'bg-red-50 dark:bg-red-950/30 border-red-300 dark:border-red-700',
+      tc: 'text-red-700 dark:text-red-300',
+      sc: 'text-red-600 dark:text-red-400',
+    },
+  } as const;
+  const conf = confidenceConfig[confidence];
 
   return (
     <div className="space-y-5 animate-fade-in-up">
+
+      {/* ─── CONFIDENCE LAYER ─── */}
+      {compressedSize > 0 && (
+        <div className={`flex items-start gap-3 p-4 rounded-2xl border-2 ${conf.bg}`}>
+          <span className="text-2xl flex-shrink-0 mt-0.5">{conf.icon}</span>
+          <div className="min-w-0 flex-1">
+            <p className={`font-bold text-sm leading-snug ${conf.tc}`}>{conf.label}</p>
+            <p className={`text-xs mt-0.5 leading-snug ${conf.sc}`}>{conf.sub}</p>
+            {confidence === 'pass' && (
+              <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-2 flex-wrap">
+                <span>Size: <strong className="text-emerald-600 dark:text-emerald-400">{(compressedSize / 1024).toFixed(1)}KB</strong></span>
+                <span className="text-border">·</span>
+                <span>Reduced by <strong>{compressionPercentage.toFixed(1)}%</strong></span>
+                <span className="text-border">·</span>
+                <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  Ready to upload
+                </span>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Status Banner */}
       {!success && error ? (
         <div className="flex items-start gap-3 p-4 rounded-xl bg-destructive/8 border border-destructive/20 text-destructive">
@@ -187,6 +261,47 @@ export default function ResultPreview({
           Compress Another
         </button>
       </div>
+      {/* ─── Post-Result Funnel ─── */}
+      {success && (
+        <div className="mt-6 pt-5 border-t border-border">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">What&apos;s next?</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {/* Try another size */}
+            <a
+              href="/resize-image-20kb"
+              className="group flex items-center gap-2.5 p-3 rounded-xl border border-border bg-muted/20 hover:border-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 transition-all"
+            >
+              <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm font-bold">20</span>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-foreground group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">Need 20KB?</p>
+                <p className="text-[10px] text-muted-foreground truncate">SSC, Aadhar portals</p>
+              </div>
+            </a>
+            {/* Fix upload errors */}
+            <a
+              href="/photo-upload-failed-ssc-fix"
+              className="group flex items-center gap-2.5 p-3 rounded-xl border border-border bg-muted/20 hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all"
+            >
+              <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center text-sm">🛠</span>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-foreground group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">Still rejected?</p>
+                <p className="text-[10px] text-muted-foreground truncate">Fix portal upload errors</p>
+              </div>
+            </a>
+            {/* Convert format */}
+            <a
+              href="/png-to-jpg"
+              className="group flex items-center gap-2.5 p-3 rounded-xl border border-border bg-muted/20 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-all"
+            >
+              <span className="flex-shrink-0 w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">PNG</span>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-foreground group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">Convert PNG → JPG</p>
+                <p className="text-[10px] text-muted-foreground truncate">Portal only accepts JPG?</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

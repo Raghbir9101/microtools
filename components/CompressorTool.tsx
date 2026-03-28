@@ -14,6 +14,10 @@ interface CompressorToolProps {
   options: CompressionOption[];
   title: string;
   description: string;
+  /** When true, compresses automatically with options[0].size immediately after drop — no button click needed */
+  autoCompress?: boolean;
+  /** Controls the portal-specific acceptance badge shown in ResultPreview */
+  portalContext?: 'ssc' | 'ibps' | 'railway' | 'signature' | 'upsc' | 'generic';
 }
 
 type Step = 'upload' | 'compress' | 'result';
@@ -28,6 +32,8 @@ export default function CompressorTool({
   options,
   title,
   description,
+  autoCompress = false,
+  portalContext = 'generic',
 }: CompressorToolProps) {
   const [step, setStep] = useState<Step>('upload');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -40,23 +46,27 @@ export default function CompressorTool({
     setSelectedFile(file);
     setPreview(previewUrl);
     setResult(null);
-    setStep('compress');
+
+    if (autoCompress && options.length > 0) {
+      // Skip the "compress" step — fire immediately with the default (first) option
+      setStep('compress');
+      handleCompressInternal(file, options[0].size);
+    } else {
+      setStep('compress');
+    }
   };
 
-  const handleCompress = async (sizeKB: number) => {
-    if (!selectedFile) return;
-
+  const handleCompressInternal = async (file: File, sizeKB: number) => {
     setIsLoading(true);
     setSelectedSize(sizeKB);
-
     try {
-      const compressionResult = await compressImageToSize(selectedFile, sizeKB);
+      const compressionResult = await compressImageToSize(file, sizeKB);
       setResult(compressionResult);
       setStep('result');
     } catch {
       setResult({
         blob: new Blob(),
-        originalSize: selectedFile.size,
+        originalSize: file.size,
         compressedSize: 0,
         compressionPercentage: 0,
         quality: 0,
@@ -67,6 +77,11 @@ export default function CompressorTool({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleCompress = async (sizeKB: number) => {
+    if (!selectedFile) return;
+    await handleCompressInternal(selectedFile, sizeKB);
   };
 
   const handleReset = () => {
@@ -194,6 +209,7 @@ export default function CompressorTool({
                 success={result.success}
                 error={result.error}
                 onReset={handleReset}
+                portalContext={portalContext}
               />
             )}
           </div>

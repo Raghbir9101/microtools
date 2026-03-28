@@ -10,9 +10,14 @@ interface FAQ {
 interface FAQSectionProps {
   faqs: FAQ[];
   title?: string;
+  subtitle?: string;
 }
 
-export default function FAQSection({ faqs, title = 'Frequently Asked Questions' }: FAQSectionProps) {
+export default function FAQSection({
+  faqs,
+  title = 'Frequently Asked Questions',
+  subtitle = 'Common questions about using this tool — answered.',
+}: FAQSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -20,7 +25,7 @@ export default function FAQSection({ faqs, title = 'Frequently Asked Questions' 
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{title}</h2>
-          <p className="text-muted-foreground text-sm">Everything you need to know about image compression for government forms.</p>
+          <p className="text-muted-foreground text-sm">{subtitle}</p>
         </div>
 
         <div className="space-y-2">

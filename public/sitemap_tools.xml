@@ -1,182 +1,252 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ── Homepage + Broad Intent ──────────────────────────────────────────── -->
   <url>
     <loc>https://tools.draftly.co.in</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/resize-image-10kb</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/resize-image-20kb</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/resize-image-20kb-ssc</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/resize-image-50kb</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/resize-image-50kb-upsc</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/resize-image-100kb</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/resize-image-100kb-railway</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/background-remover</loc>
-    <lastmod>2026-03-27</lastmod>
+    <loc>https://tools.draftly.co.in/reduce-image-size</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/resize-signature</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://tools.draftly.co.in/image-tools</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.92</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/resize-signature-ssc</loc>
-    <lastmod>2026-03-27</lastmod>
+    <loc>https://tools.draftly.co.in/pdf-tools</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- ── Core Size Compressor Pages (survivors only) ───────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/resize-image-20kb</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/resize-image-50kb</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/resize-image-100kb</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.93</priority>
+  </url>
+
+  <!-- ── SSC Cluster (single survivor + problem fix) ───────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/resize-image-20kb-ssc</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.97</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/photo-upload-failed-ssc-fix</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- ── Signature Cluster (2 survivors) ───────────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/resize-signature</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.94</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/resize-signature-for-ssc</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/signature-upload-failed-fix</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+
+  <!-- ── Exam Pages (survivors) ────────────────────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/resize-image-for-exams</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/resize-image-for-aadhar</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/resize-signature-10kb</loc>
-    <lastmod>2026-03-27</lastmod>
+    <loc>https://tools.draftly.co.in/resize-image-for-visa</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/passport-photo-maker</loc>
-    <lastmod>2026-03-27</lastmod>
+    <loc>https://tools.draftly.co.in/resize-image-for-whatsapp</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.78</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/passport-size-photo-online</loc>
-    <lastmod>2026-03-27</lastmod>
+    <loc>https://tools.draftly.co.in/resize-image-for-instagram-post</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- ── Passport / ID Cluster (single survivor) ──────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/passport-photo-maker</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.92</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/remove-background-for-passport-photo</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/remove-background-for-govt-id</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+
+  <!-- ── Problem Fix Pages (strong, keep all) ──────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/png-not-accepted-by-portal-fix</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/image-size-too-large-fix</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/how-to-reduce-image-size-without-losing-quality</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+
+  <!-- ── Core Image Tools ───────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/background-remover</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/resize-image-dimensions</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/photo-to-black-and-white</loc>
-    <lastmod>2026-03-27</lastmod>
+    <loc>https://tools.draftly.co.in/image-size-checker</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/image-grayscale-converter</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.82</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/photo-dpi-converter</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/jpg-to-png</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/png-to-jpg</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/webp-to-jpg</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/jpg-to-webp</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/image-crop</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- ── Image Converters ───────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/png-to-jpg</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/jpg-to-png</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/webp-to-jpg</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/image-size-checker</loc>
-    <lastmod>2026-03-27</lastmod>
+    <loc>https://tools.draftly.co.in/jpg-to-webp</loc>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.82</priority>
+  </url>
+
+  <!-- ── Image Filters / Effects ───────────────────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/photo-to-black-and-white</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/image-grayscale-converter</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/image-blur</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.78</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/add-watermark</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
   </url>
-  <url>
-    <loc>https://tools.draftly.co.in/youtube-thumbnail-downloader</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/instagram-image-resizer</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
+
+  <!-- ── PDF Tools ─────────────────────────────────────────────────────────── -->
   <url>
     <loc>https://tools.draftly.co.in/merge-pdf</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/jpg-to-pdf</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -193,54 +263,33 @@
     <priority>0.88</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/resize-image-5kb</loc>
+    <loc>https://tools.draftly.co.in/jpg-to-pdf-for-bank-documents</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/convert-images-to-pdf-for-govt-forms</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.88</priority>
+  </url>
+
+  <!-- ── Social Media Tools ────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/instagram-image-resizer</loc>
     <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://tools.draftly.co.in/resize-image-30kb</loc>
+    <loc>https://tools.draftly.co.in/download-youtube-thumbnail-hd</loc>
     <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
+    <priority>0.85</priority>
   </url>
-  <url>
-    <loc>https://tools.draftly.co.in/resize-image-200kb</loc>
-    <lastmod>2026-03-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/signature-resize-20kb</loc>
-    <lastmod>2026-03-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/passport-photo-resize</loc>
-    <lastmod>2026-03-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/about</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/privacy-policy</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://tools.draftly.co.in/contact</loc>
-    <lastmod>2026-03-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <!-- Blog posts -->
+
+  <!-- ── Blog ──────────────────────────────────────────────────────────────── -->
   <url>
     <loc>https://tools.draftly.co.in/blog</loc>
     <lastmod>2026-03-28</lastmod>
@@ -251,13 +300,13 @@
     <loc>https://tools.draftly.co.in/blog/ssc-photo-size-requirements-2026</loc>
     <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.82</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/blog/how-to-resize-image-for-govt-forms</loc>
     <lastmod>2026-03-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.82</priority>
   </url>
   <url>
     <loc>https://tools.draftly.co.in/blog/best-image-size-for-passport</loc>
@@ -265,5 +314,67 @@
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
-</urlset>
+  <url>
+    <loc>https://tools.draftly.co.in/blog/upsc-photo-requirements-2026</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/blog/railway-rrb-photo-size-guide</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/blog/ibps-photo-size-requirements</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.82</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/blog/how-to-resize-signature-for-exam-forms</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/blog/how-to-merge-pdf-files-free</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/blog/instagram-image-size-guide-2026</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/blog/best-youtube-thumbnail-size-guide</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
 
+  <!-- ── Static Pages ───────────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://tools.draftly.co.in/about</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/privacy-policy</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://tools.draftly.co.in/contact</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+</urlset>

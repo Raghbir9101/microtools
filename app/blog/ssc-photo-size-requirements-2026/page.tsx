@@ -156,8 +156,8 @@ export default function SscPhotoGuide() {
               <h2 className="text-2xl font-bold text-foreground mb-4">Recommended Tools for SSC Forms</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  { href: '/resize-image-20kb-ssc', title: 'Resize Photo to 20KB (SSC)', desc: 'Most common SSC photo requirement' },
-                  { href: '/resize-image-10kb', title: 'Resize Signature to 10KB', desc: 'For SSC signature upload' },
+                  { href: '/resize-image-20kb-ssc', title: 'Resize Photo to 20KB (SSC)', desc: 'Auto-compress — drop photo, get 20KB instantly' },
+                  { href: '/resize-signature', title: 'Resize Signature to 10KB', desc: 'For SSC signature upload (10KB + 20KB)' },
                   { href: '/resize-image-dimensions', title: 'Pixel Dimension Resizer', desc: 'Resize to exact 200×230 pixels' },
                   { href: '/png-to-jpg', title: 'PNG to JPG Converter', desc: 'Convert PNG photos to JPG format' },
                 ].map((tool) => (
@@ -174,6 +174,29 @@ export default function SscPhotoGuide() {
                 ))}
               </div>
             </section>
+
+            {/* ─── URGENCY CTA BANNER ─── */}
+            <div className="mt-10 rounded-2xl border-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 p-6">
+              <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-2">Ready to compress?</p>
+              <p className="text-xl font-extrabold text-foreground mb-1">Stop reading — fix it in 10 seconds</p>
+              <p className="text-sm text-muted-foreground mb-5">Drop your photo below and it compresses to 20KB automatically. No button click.</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/resize-image-20kb-ssc"
+                  className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 transition-all shadow-md"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  Compress SSC Photo → 20KB
+                </Link>
+                <Link
+                  href="/photo-upload-failed-ssc-fix"
+                  className="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 border-emerald-300 dark:border-emerald-700 text-foreground font-semibold text-sm hover:bg-emerald-100 dark:hover:bg-emerald-950/50 transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                  Portal rejected my photo — fix it
+                </Link>
+              </div>
+            </div>
 
             <div className="mt-12">
               <FAQSection faqs={faqs} title="SSC Photo FAQs" />

@@ -39,7 +39,7 @@ const homeFaqs = [
   {
     question: 'Which image size should I choose for my exam form?',
     answer:
-      'SSC exams typically require 20KB, UPSC requires 50KB, and Indian Railway (RRB) exams require 100KB. Always verify the exact requirement in your official exam notification.',
+      'SSC exams typically require 20KB, UPSC requires 50KB, Railway RRB requires 100KB, and IBPS/SBI bank exams require 50KB. NEET and JEE (NTA) portals accept up to 200KB. Always verify with your official exam notification.',
   },
   {
     question: 'Can I use these tools on my phone?',
@@ -47,9 +47,24 @@ const homeFaqs = [
       'Absolutely. All tools are mobile-first and tested on Android and iOS browsers. You can upload, compress, and download directly from your smartphone.',
   },
   {
+    question: 'What image size is needed for IBPS PO and Clerk?',
+    answer:
+      'IBPS PO and IBPS Clerk require a JPEG photograph between 20KB and 50KB, dimensions 200×230 pixels, white background. Signature should be 10KB–20KB. Use our IBPS Photo Compressor for one-click compression.',
+  },
+  {
+    question: 'What is the photo size for NEET UG?',
+    answer:
+      'NTA NEET UG requires a JPEG photo between 10KB and 200KB. Signature must be 4KB–30KB JPEG. Use our NEET Photo Compressor to compress your photo to 100KB (safe mid-range).',
+  },
+  {
+    question: 'What is the photo size for WhatsApp profile?',
+    answer:
+      'WhatsApp profile pictures are displayed at 200×200 pixels. The ideal upload size is under 100KB in JPEG format. WhatsApp automatically compresses large images — pre-compressing with our tool gives you better quality control.',
+  },
+  {
     question: 'When will PDF and Video tools be available?',
     answer:
-      "We're actively building them. Subscribe to updates or check back soon — PDF compressor and converter tools are coming next.",
+      "We're actively building them. PDF compressor, video compressor, and converter tools are coming next. PDF merge, JPG-to-PDF, and HTML-to-PDF tools are already live.",
   },
 ];
 
@@ -105,10 +120,10 @@ export default function Home() {
           {/* ── Stats bar ────────────────────────────────────────────────── */}
           <div className="mb-16 grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { value: '9+', label: 'Tools Available' },
+              { value: '30+', label: 'Tools Available' },
               { value: '100%', label: 'Browser-Based' },
               { value: '0 ₹', label: 'Always Free' },
-              { value: '±2KB', label: 'Compression Tolerance' },
+              { value: '±2KB', label: 'Compression Accuracy' },
             ].map((s) => (
               <div key={s.label} className="p-4 rounded-xl border border-border bg-card text-center">
                 <p className="text-2xl font-extrabold text-primary">{s.value}</p>
@@ -208,13 +223,42 @@ export default function Home() {
           {/* ── Bottom Ad ────────────────────────────────────────────────── */}
           <AdSlot variant="section" />
 
-          {/* ── FAQ ──────────────────────────────────────────────────────── */}
-          <section className="mt-12">
-            <FAQSection faqs={homeFaqs} title="Frequently Asked Questions" />
+          {/* ── Popular Searches ─────────────────────────────────────────── */}
+          <section className="mt-12 mb-10">
+            <h2 className="text-xl font-bold text-foreground mb-5">Popular Searches</h2>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'SSC CGL Photo', href: '/resize-image-for-ssc-cgl' },
+                { label: 'UPSC 50KB Photo', href: '/resize-image-50kb-upsc' },
+                { label: 'Railway 100KB Photo', href: '/resize-image-100kb-railway' },
+                { label: 'IBPS / SBI Photo', href: '/resize-image-for-ibps' },
+                { label: 'NEET Photo Compress', href: '/resize-image-for-neet' },
+                { label: 'JEE Main Photo', href: '/resize-image-for-jee' },
+                { label: 'Aadhar Photo Update', href: '/resize-image-for-aadhar' },
+                { label: 'Visa Photo', href: '/resize-image-for-visa' },
+                { label: 'WhatsApp Image', href: '/resize-image-for-whatsapp' },
+                { label: 'Passport Photo', href: '/passport-photo-maker' },
+                { label: 'Fix Photo Upload Error', href: '/photo-upload-failed-ssc-fix' },
+                { label: 'File Too Large Fix', href: '/image-size-too-large-fix' },
+                { label: 'Reduce Image Size', href: '/how-to-reduce-image-size-without-losing-quality' },
+                { label: 'Remove Background', href: '/background-remover' },
+                { label: 'Compress Signature', href: '/resize-signature' },
+              ].map((tag) => (
+                <Link
+                  key={tag.href}
+                  href={tag.href}
+                  className="px-3 py-1.5 text-xs font-medium rounded-full border border-border bg-muted hover:border-primary/40 hover:bg-primary/5 hover:text-primary transition-all text-muted-foreground"
+                >
+                  {tag.label}
+                </Link>
+              ))}
+            </div>
           </section>
 
-
-
+          {/* ── FAQ ──────────────────────────────────────────────────────── */}
+          <section className="mt-4">
+            <FAQSection faqs={homeFaqs} title="Frequently Asked Questions" />
+          </section>
 
         </div>
       </main>
